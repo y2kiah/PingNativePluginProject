@@ -147,7 +147,7 @@ ping(
     u16 dataSize    = DefaultDataSize,
     u8  ttl         = DefaultTTL,
     u16 timeoutMS   = DefaultTimeoutMS,
-    u16 intervalMS  = DefaultIntervalMS);
+    u16 intervalMS  = DefaultIntervalMS); // TODO: interval not implemented
 
 /**
  * Checks poll sequence status for completion and stores a copy of the resulting PingStats.
