@@ -94,10 +94,10 @@ public class PluginNativePing : MonoBehaviour
             // TODO: change this to a known IP on your local network
             CreatePing(
                 "192.168.0.185", // host
-                10,				 // number of requests in sequence
-                64,			     // data size
-                30,				 // ttl
-                1000),			 // timeout ms
+                10,              // number of requests in sequence
+                64,              // data size
+                30,              // ttl
+                1000),           // timeout ms
             CreatePing("google.com", 10),
             CreatePing("yahoo.com", 10),
             CreatePing("gamedev.net", 10),
