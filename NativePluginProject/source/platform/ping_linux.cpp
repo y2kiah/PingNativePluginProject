@@ -66,7 +66,7 @@ createSocket(
 
     if (opt == SOCKET_ERROR) {
         printf("TTL setsockopt failed: %d\n", errno);
-		perror("socket");
+        perror("socket");
         return Result_Error;
     }
 
@@ -185,7 +185,7 @@ pingJobProcess(
     initHighPerfTimer();
 
     for (;;)
-	{
+    {
         if (numRunning == 0)
         {
             // there are no running jobs, use wait_pop to yield the thread until we get a new job
@@ -233,7 +233,7 @@ pingJobProcess(
                     if (status != Sequence_Running)
                     {
                         // sequence finished, remove from running jobs by swap and pop
-						runningJobs[j] = runningJobs[--numRunning];
+                        runningJobs[j] = runningJobs[--numRunning];
                     }
                 }
                 else {
@@ -241,12 +241,12 @@ pingJobProcess(
                 }
             }
         }
-	}
+    }
 
     running.clear();
     threadId = {};
 
-	return 0;
+    return 0;
 }
 
 
@@ -255,11 +255,11 @@ startPingJobThread()
 {
     if (!running.test_and_set())
     {
-		pthread_create(
-			&threadId,
-			nullptr,
+        pthread_create(
+            &threadId,
+            nullptr,
             pingJobProcess,
-			nullptr);
+            nullptr);
     }
 
     return Result_Success;

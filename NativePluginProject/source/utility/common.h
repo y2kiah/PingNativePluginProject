@@ -39,7 +39,7 @@
 
 // static assert macro for checking struct size to a base alignment when packed in an array
 #define static_assert_aligned_size(Type,bytes) \
-	static_assert(sizeof(Type) % (bytes) == 0, \
+    static_assert(sizeof(Type) % (bytes) == 0, \
                   #Type " size is not a multiple of " xstr(bytes))
 
 inline bool is_power_of_2(s32 x) { return (x > 0 && !(x & (x-1))); }
@@ -105,47 +105,47 @@ inline r64 max(r64 a, r64 b) { return (a > b ? a : b); }
     #define _strcpy_s(dest,destsz,src)					strcpy_s(dest,destsz,src)
     #define _strncpy_s(dest,destsz,src,count)			strncpy_s(dest,destsz,src,count)
     #define _strcat_s(dest,destsz,src)					strcat_s(dest,destsz,src)
-	#define _vsnprintf_s(dest,destsz,count,fmt,valist)	vsnprintf_s(dest,destsz,count,fmt,valist)
-	#define _memcpy_s(dest,destsz,src,count)			memcpy_s(dest,destsz,src,count)
-	#define _fopen_s(pFile,filename,mode)				fopen_s(pFile,filename,mode)
+    #define _vsnprintf_s(dest,destsz,count,fmt,valist)	vsnprintf_s(dest,destsz,count,fmt,valist)
+    #define _memcpy_s(dest,destsz,src,count)			memcpy_s(dest,destsz,src,count)
+    #define _fopen_s(pFile,filename,mode)				fopen_s(pFile,filename,mode)
 #else
     #define _strcpy_s(dest,destsz,src)					strcpy(dest,src)
     #define _strncpy_s(dest,destsz,src,count)			strncpy((dest),(src),min((u64)(destsz),(u64)(count)))
     #define _strcat_s(dest,destsz,src)					strcat(dest,src)
-	#define _vscprintf(fmt,valist)						vsnprintf(nullptr,0,fmt,valist)
-	#define _memcpy_s(dest,destsz,src,count)			memcpy(dest,src,count)
-	#define _fopen_s(pFile,filename,mode)				*pFile=fopen(filename,mode)
+    #define _vscprintf(fmt,valist)						vsnprintf(nullptr,0,fmt,valist)
+    #define _memcpy_s(dest,destsz,src,count)			memcpy(dest,src,count)
+    #define _fopen_s(pFile,filename,mode)				*pFile=fopen(filename,mode)
 
-	#define _TRUNCATE									0xFFFFFFFF
-	#include <cstdarg>
-	#include <cstdio>
+    #define _TRUNCATE									0xFFFFFFFF
+    #include <cstdarg>
+    #include <cstdio>
 
-	int _vsnprintf_s(
-		char* buffer,
-		size_t sizeOfBuffer,
-		size_t count,
-		const char* format,
-   		va_list args)
-	{
-		if ((count != _TRUNCATE) && (count < sizeOfBuffer)) {
-			sizeOfBuffer = count;
-		}
+    int _vsnprintf_s(
+        char* buffer,
+        size_t sizeOfBuffer,
+        size_t count,
+        const char* format,
+           va_list args)
+    {
+        if ((count != _TRUNCATE) && (count < sizeOfBuffer)) {
+            sizeOfBuffer = count;
+        }
 
-		int result = vsnprintf(buffer, sizeOfBuffer, format, args);
+        int result = vsnprintf(buffer, sizeOfBuffer, format, args);
 
-		if ((0 <= result) && (sizeOfBuffer <= (size_t)result)) {
-			result = -1;
-		}
+        if ((0 <= result) && (sizeOfBuffer <= (size_t)result)) {
+            result = -1;
+        }
 
-		return result;
-	}
+        return result;
+    }
 #endif
 
 
 // Lock condition
 enum LockCond : u8 {
-	DoNotLock = 0,
-	DoLock = 1
+    DoNotLock = 0,
+    DoLock = 1
 };
 
 // spin locks
@@ -154,51 +154,51 @@ enum LockCond : u8 {
 // not use this under high contention from many threads
 void lock_spin(atomic_lock& lock)
 {
-	// test_and_set returns false when the last value was false, if true is returned, another
-	// thread beat us to it
-	while (lock.test_and_set(std::memory_order_acquire)) {
-		_mm_pause();
-	}
+    // test_and_set returns false when the last value was false, if true is returned, another
+    // thread beat us to it
+    while (lock.test_and_set(std::memory_order_acquire)) {
+        _mm_pause();
+    }
 }
 
 void unlock(atomic_lock& lock)
 {
-	// set the value back to false, allowing another thread to grab the lock with test_and_set
-	lock.clear(std::memory_order_release);
+    // set the value back to false, allowing another thread to grab the lock with test_and_set
+    lock.clear(std::memory_order_release);
 }
 
 // the ticket_mutex implementation prevents thread starvation and ensures each thread acquires the
 // lock in order, but this costs 4 more bytes than the atomic_lock version
 void lock_spin(ticket_mutex& mutex)
 {
-	// claim this thread's ticket atomically
-	u32 ticket = mutex.ticket.fetch_add(1, std::memory_order_relaxed);
-	// wait until the ticket serving reaches this one
-	while (ticket != mutex.serving.load(std::memory_order_acquire)) {
-		_mm_pause();
-	}
+    // claim this thread's ticket atomically
+    u32 ticket = mutex.ticket.fetch_add(1, std::memory_order_relaxed);
+    // wait until the ticket serving reaches this one
+    while (ticket != mutex.serving.load(std::memory_order_acquire)) {
+        _mm_pause();
+    }
 }
 
 void unlock(ticket_mutex& mutex)
 {
-	mutex.serving.fetch_add(1, std::memory_order_release);
+    mutex.serving.fetch_add(1, std::memory_order_release);
 }
 
 // conditional versions of the locks above
 void lock_spin(atomic_lock& lock, LockCond _lock) {
-	if (_lock == DoLock) { lock_spin(lock); }
+    if (_lock == DoLock) { lock_spin(lock); }
 }
 
 void unlock(atomic_lock& lock, LockCond _lock) {
-	if (_lock == DoLock) { unlock(lock); }
+    if (_lock == DoLock) { unlock(lock); }
 }
 
 void lock_spin(ticket_mutex& mutex, LockCond _lock) {
-	if (_lock == DoLock) { lock_spin(mutex); }
+    if (_lock == DoLock) { lock_spin(mutex); }
 }
 
 void unlock(ticket_mutex& mutex, LockCond _lock) {
-	if (_lock == DoLock) { unlock(mutex); }
+    if (_lock == DoLock) { unlock(mutex); }
 }
 
 #endif

@@ -83,9 +83,9 @@ struct PingSequence {
 };
 
 struct Ping {
-	PingJobHnd     hnd;
-	SequenceStatus status;
-	PingStats      stats;
+    PingJobHnd     hnd;
+    SequenceStatus status;
+    PingStats      stats;
 };
 
 
@@ -122,17 +122,17 @@ struct PingJob {
 #include "../utility/concurrent_queue.h"
 
 SparseHandleMap16_Typed_WithBuffer(
-	PingJob,
-	PingJobMap,
-	PingJobHnd,
-	0,
-	MaxPingJobs);
+    PingJob,
+    PingJobMap,
+    PingJobHnd,
+    0,
+    MaxPingJobs);
 
 ConcurrentQueue_Typed_WithBuffer(
-	PingJobHnd,
-	PingJobQueue,
-	MaxPingJobs,
-	0);
+    PingJobHnd,
+    PingJobQueue,
+    MaxPingJobs,
+    0);
 
 
 

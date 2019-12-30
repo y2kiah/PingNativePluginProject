@@ -189,7 +189,7 @@ pingJobProcess(
     }
 
     for (;;)
-	{
+    {
         if (numRunning == 0)
         {
             // there are no running jobs, use wait_pop to yield the thread until we get a new job
@@ -237,7 +237,7 @@ pingJobProcess(
                     if (status != Sequence_Running)
                     {
                         // sequence finished, remove from running jobs by swap and pop
-						runningJobs[j] = runningJobs[--numRunning];
+                        runningJobs[j] = runningJobs[--numRunning];
                     }
                 }
                 else {
@@ -245,14 +245,14 @@ pingJobProcess(
                 }
             }
         }
-	}
+    }
 
     WSACleanup();
     running.clear();
     hThread = 0;
     threadId = 0;
 
-	return 0;
+    return 0;
 }
 
 

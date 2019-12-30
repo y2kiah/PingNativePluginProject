@@ -15,7 +15,7 @@ extern "C"
 void
 UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API
 UnityPluginLoad(
-	IUnityInterfaces* unityInterfaces)
+    IUnityInterfaces* unityInterfaces)
 {}
 
 
@@ -40,7 +40,7 @@ CreatePing(
     u16 timeoutMS   = DefaultTimeoutMS,
     u16 intervalMS  = DefaultIntervalMS)
 {
-	return ping(host, numRequests, dataSize, ttl, timeoutMS, intervalMS);
+    return ping(host, numRequests, dataSize, ttl, timeoutMS, intervalMS);
 }
 
 /**
@@ -59,11 +59,11 @@ UNITY_INTERFACE_EXPORT
 PollPingResult(
     Ping* ping)
 {
-	if (ping == nullptr) {
-		return false;
-	}
-	
-	return pollResult(*ping);
+    if (ping == nullptr) {
+        return false;
+    }
+    
+    return pollResult(*ping);
 }
 
 

@@ -10,13 +10,13 @@
 
 int main(int argc, char *argv[])
 {
-	Ping pings[5] = {
+    Ping pings[5] = {
         ping(
-			"192.168.0.185", // host
-			10,				 // number of requests in sequence
-			64U,			 // data size
-			30,				 // ttl
-			1000U),			 // timeout ms
+            "192.168.0.185", // host
+            10,              // number of requests in sequence
+            64U,             // data size
+            30,              // ttl
+            1000U),          // timeout ms
         ping("google.com", 10),
         ping("yahoo.com", 10),
         //ping("127.0.0.1"), // Note: adding localhost to the mix seems to invalidate other sockets
@@ -25,20 +25,20 @@ int main(int argc, char *argv[])
     };
 
     for(;;) {
-    	u32 finishedCount = 0;
-		
+        u32 finishedCount = 0;
+        
         for (auto& ping : pings) {
-			if (pollResult(ping)) {
-				++finishedCount;
-			}
+            if (pollResult(ping)) {
+                ++finishedCount;
+            }
         }
 
-		if (finishedCount == countof(pings)) {
-			break;
-		}
+        if (finishedCount == countof(pings)) {
+            break;
+        }
     }
 
-	platformPause();
+    platformPause();
 
-	return 0;
+    return 0;
 }

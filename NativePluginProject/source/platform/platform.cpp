@@ -4,23 +4,23 @@
 
 void platformPause()
 {
-	system("pause");
+    system("pause");
 }
 
 void yieldThread()
 {
-	SwitchToThread();
+    SwitchToThread();
 }
 
 void platformSleep(
-	unsigned long ms)
+    unsigned long ms)
 {
-	Sleep(ms);
+    Sleep(ms);
 }
 
 u32 platformGetPid()
 {
-	return (u32)GetCurrentProcessId();
+    return (u32)GetCurrentProcessId();
 }
 
 
@@ -32,7 +32,7 @@ u32 platformGetPid()
 
 void platformPause()
 {
-	//pause();
+    //pause();
 }
 
 #ifdef _SC_PRIORITY_SCHEDULING
@@ -40,7 +40,7 @@ void platformPause()
 
 void yieldThread()
 {
-	sched_yield();
+    sched_yield();
 }
 
 #else
@@ -48,20 +48,20 @@ void yieldThread()
 #include <thread>
 void yieldThread()
 {
-	std::this_thread::yield();
+    std::this_thread::yield();
 }
 
 #endif
 
 void platformSleep(
-	unsigned long ms)
+    unsigned long ms)
 {
-	usleep(ms * 1000);
+    usleep(ms * 1000);
 }
 
 u32 platformGetPid()
 {
-	return (u32)getpid();
+    return (u32)getpid();
 }
 
 

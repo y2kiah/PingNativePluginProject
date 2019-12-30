@@ -49,27 +49,27 @@ typedef std::atomic_flag		atomic_lock;
  * @var	value		unioned with the above four vars, used for direct comparison of ids
  */
 struct h32 {
-	union {
-		struct {
-			u16 index;
-			u8  typeId;
-			u8  generation : 7;
-			u8  free       : 1;
-		};
-		u32 value;
-	};
+    union {
+        struct {
+            u16 index;
+            u8  typeId;
+            u8  generation : 7;
+            u8  free       : 1;
+        };
+        u32 value;
+    };
 };
 
 struct h64 {
-	union {
-		struct {
-			u32 index;
-			u16 typeId;
-			u16 generation : 15;
-			u16 free       : 1;
-		};
-		u64 value;
-	};
+    union {
+        struct {
+            u32 index;
+            u16 typeId;
+            u16 generation : 15;
+            u16 free       : 1;
+        };
+        u64 value;
+    };
 };
 
 #define null_h32	h32{}
@@ -88,8 +88,8 @@ bool operator> (const h64& a, const h64& b) { return (a.value > b.value); }
 
 // ticket mutex
 struct ticket_mutex {
-	atomic_u32 ticket{0};
-	atomic_u32 serving{0};
+    atomic_u32 ticket{0};
+    atomic_u32 serving{0};
 };
 
 #endif

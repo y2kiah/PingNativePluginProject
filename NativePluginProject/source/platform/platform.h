@@ -12,7 +12,7 @@ void platformPause();
 void yieldThread();
 
 void platformSleep(
-	unsigned long ms);
+    unsigned long ms);
 
 u32 platformGetPid();
 
