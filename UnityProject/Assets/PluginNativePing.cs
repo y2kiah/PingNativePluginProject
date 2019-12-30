@@ -18,41 +18,41 @@ public enum SequenceStatus : uint {
 public struct PingStats
 {
     public uint  sent;
-	public uint received;
-	public uint lost;
-	public float pctLost;
-	public float minRoundTrip;
-	public float maxRoundTrip;
-	public float avgRoundTrip;
-	public float stdDevRoundTrip;
+    public uint received;
+    public uint lost;
+    public float pctLost;
+    public float minRoundTrip;
+    public float maxRoundTrip;
+    public float avgRoundTrip;
+    public float stdDevRoundTrip;
 
 
-	public override string ToString()
-	{
-		StringBuilder sb = new StringBuilder();
-		sb.AppendLine($"sent: {sent}");
-		sb.AppendLine($"received: {received}");
-		sb.AppendLine($"lost: {lost}");
-		sb.AppendLine($"pctLost: {pctLost:F3}");
-		sb.AppendLine($"minRoundTrip: {minRoundTrip:F3}ms");
-		sb.AppendLine($"maxRoundTrip: {maxRoundTrip:F3}ms");
-		sb.AppendLine($"avgRoundTrip: {avgRoundTrip:F3}ms");
-		sb.AppendLine($"stdDevRoundTrip: {stdDevRoundTrip:F3}");
-		return sb.ToString();
-	}
+    public override string ToString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine($"sent: {sent}");
+        sb.AppendLine($"received: {received}");
+        sb.AppendLine($"lost: {lost}");
+        sb.AppendLine($"pctLost: {pctLost:F3}");
+        sb.AppendLine($"minRoundTrip: {minRoundTrip:F3}ms");
+        sb.AppendLine($"maxRoundTrip: {maxRoundTrip:F3}ms");
+        sb.AppendLine($"avgRoundTrip: {avgRoundTrip:F3}ms");
+        sb.AppendLine($"stdDevRoundTrip: {stdDevRoundTrip:F3}");
+        return sb.ToString();
+    }
 }
 
 
 [StructLayout(LayoutKind.Sequential)]
 public struct PingJob
 {
-	public uint           hnd;
-	public SequenceStatus status;
-	public PingStats      stats;
+    public uint           hnd;
+    public SequenceStatus status;
+    public PingStats      stats;
 
     public override string ToString()
     {
-		return $"status: {status}\n" + stats;
+        return $"status: {status}\n" + stats;
     }
 }
 
@@ -86,13 +86,13 @@ public class PluginNativePing : MonoBehaviour
         ref PingJob ping);
 
 
-	async
-	void
-	Start()
+    async
+    void
+    Start()
     {
         PingJob[] pings = {
-			// TODO: change this to a known IP on your local network
-			CreatePing(
+            // TODO: change this to a known IP on your local network
+            CreatePing(
                 "192.168.0.185", // host
                 10,				 // number of requests in sequence
                 64,			     // data size
@@ -100,16 +100,16 @@ public class PluginNativePing : MonoBehaviour
                 1000),			 // timeout ms
             CreatePing("google.com", 10),
             CreatePing("yahoo.com", 10),
-			CreatePing("gamedev.net", 10),
+            CreatePing("gamedev.net", 10),
             CreatePing("unity3d.com", 10),
-			// we expect this to fail name resolution and return an error with 0 packets sent
-			CreatePing("intentionallycantfindthis.com", 10),
-			// we expect error result or packet loss with these due to too-low ttl and timeout values
-			CreatePing("google.com", 10, 32, 1, 1000), // low ttl
-			CreatePing("google.com", 10, 32, 128, 1) // low timeout
-			// Note: adding localhost to the mix seems to invalidate other sockets
-			//CreatePing("127.0.0.1")
-		};
+            // we expect this to fail name resolution and return an error with 0 packets sent
+            CreatePing("intentionallycantfindthis.com", 10),
+            // we expect error result or packet loss with these due to too-low ttl and timeout values
+            CreatePing("google.com", 10, 32, 1, 1000), // low ttl
+            CreatePing("google.com", 10, 32, 128, 1) // low timeout
+            // Note: adding localhost to the mix seems to invalidate other sockets
+            //CreatePing("127.0.0.1")
+        };
 
         for(;;) {
             int finishedCount = 0;
@@ -118,15 +118,15 @@ public class PluginNativePing : MonoBehaviour
                 p < pings.Length;
                 ++p)
             {
-				bool wasFinished = (pings[p].status > SequenceStatus.Sequence_Running);
+                bool wasFinished = (pings[p].status > SequenceStatus.Sequence_Running);
 
-				if (PollPingResult(ref pings[p])) {
-					++finishedCount;
+                if (PollPingResult(ref pings[p])) {
+                    ++finishedCount;
 
-					// make sure we only print the results once
-					if (!wasFinished) {
-						Debug.Log(pings[p]);
-					}
+                    // make sure we only print the results once
+                    if (!wasFinished) {
+                        Debug.Log(pings[p]);
+                    }
                 }
             }
 
@@ -134,7 +134,7 @@ public class PluginNativePing : MonoBehaviour
                 break;
             }
 
-			await Task.Delay(TimeSpan.FromMilliseconds(16));
-		}
+            await Task.Delay(TimeSpan.FromMilliseconds(16));
+        }
     }
 }
