@@ -1,20 +1,25 @@
 # Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+This project is a Unity native plugin that implements "ping" (ICMP echo request) on Windows and Linux.
+The native project includes a test.exe/.out, as well as the .dll/.so for Unity.
+A sample Unity project is also included that calls the plugin from managed code.
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+# Overview
+This library uses non-blocking raw sockets to handle up to 64 ping sequences simultaneously.
+Ping sequences allow several requests to be sent, and statistics are calculated from the results.
+A background thread is automatically managed to handle the ping workload in a way that will collect accurate timing while not blocking a GUI/game thread.
 
 # Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+## Windows
+run shell.bat or open a MSVC console
+run build.bat
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+Tested with MSVC 2017 Community on Windows 7 Professional SP1
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://www.visualstudio.com/en-us/docs/git/create-a-readme). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+## Linux
+
+run ./build.sh
+
+Raw sockets require superuser privileges on linux, to avoid this, set cap_net_raw on the executable with this command:
+sudo setcap cap_net_raw,cap_net_admin,cap_dac_override+eip test.out
+
+Tested with g++ (GCC) 9.2.1 on Fedora 30

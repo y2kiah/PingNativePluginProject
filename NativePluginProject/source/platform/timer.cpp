@@ -31,13 +31,19 @@ inline i64 getPerformanceCounter() {
 
 #else
 
+#include <time.h>
+#include <sys/timeb.h>
+
 inline i64 getPerformanceFrequency() {
-	return (i64)SDL_GetPerformanceFrequency();
+	return 1000000LL;
 }
 
-inline i64 getPerformanceCounter() {
-	ASSERT_TIMER_INITIALIZED;
-	return (i64)SDL_GetPerformanceCounter();
+// requires -lrt (real-time lib)
+inline i64 getPerformanceCounter()
+{
+    timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts);
+    return (i64)ts.tv_sec * 1000000LL + (i64)ts.tv_nsec / 1000LL;
 }
 
 #endif

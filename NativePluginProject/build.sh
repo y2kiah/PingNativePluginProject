@@ -9,14 +9,14 @@ if ! [ -d ./build ]; then
 fi
 cd ./build
 
-/bin/g++ $CommonCompilerFlags -fPIC -shared -rdynamic -nostartfiles -o libunity-ping.so ../source/unity-ping.cpp
+/bin/g++ $CommonCompilerFlags -fPIC -shared -rdynamic -o libunity-ping.so ../source/unity-ping.cpp -lrt -pthread
 
-/bin/g++ $CommonCompilerFlags -o test.out ../source/test.cpp
+/bin/g++ $CommonCompilerFlags -o test.out ../source/test.cpp -lrt -pthread
 
 #get disassembly
 #/bin/g++ $CommonCompilerFlags -S -fverbose-asm -masm=intel -o unity-ping.s ../source/unity-ping.cpp
-objdump -drwCS -Mintel --disassembler-options=intel unity-ping.so > unity-ping.s
-objdump -drwCS -Mintel --disassembler-options=intel test.out > test.s
+#objdump -drwCS -Mintel --disassembler-options=intel unity-ping.so > unity-ping.s
+#objdump -drwCS -Mintel --disassembler-options=intel test.out > test.s
 
 cd ..
 

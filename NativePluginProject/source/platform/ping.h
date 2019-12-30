@@ -89,6 +89,53 @@ struct Ping {
 };
 
 
+#ifdef _WIN32
+
+#include <winsock2.h>
+#include <ws2tcpip.h>
+
+#else
+
+// Linux
+#include <unistd.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+
+typedef int SOCKET;
+#define INVALID_SOCKET -1
+#define SOCKET_ERROR   -1
+
+#endif
+
+struct PingJob {
+    PingSequence   sequence;
+    SOCKET         socket;
+    sockaddr_in    destAddr;
+    sockaddr_in    sourceAddr;
+    u8             sendBuffer[MaxPacketSize];
+    u8             receiveBuffer[ReceiveBufferSize];
+};
+
+
+#include "../utility/sparse_handle_map_16.h"
+#include "../utility/concurrent_queue.h"
+
+SparseHandleMap16_Typed_WithBuffer(
+	PingJob,
+	PingJobMap,
+	PingJobHnd,
+	0,
+	MaxPingJobs);
+
+ConcurrentQueue_Typed_WithBuffer(
+	PingJobHnd,
+	PingJobQueue,
+	MaxPingJobs,
+	0);
+
+
+
 /**
  * Adds a ping job and runs it immediately on the job thread. This is a non-blocking call.
  * @returns Ping struct with a non-zero hnd on success, or 0 in hnd if job queue is full 
@@ -116,5 +163,10 @@ ping(
 bool
 pollResult(
     Ping& ping);
+
+
+SequenceStatus
+runPingSequence(
+    PingJob& job);
 
 #endif

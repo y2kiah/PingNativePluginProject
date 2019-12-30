@@ -51,3 +51,6 @@ Temp/
 # ASM output
 *.s
 *.asm
+
+!Assets/Plugins/**/*.dll
+!Assets/Plugins/**/*.so

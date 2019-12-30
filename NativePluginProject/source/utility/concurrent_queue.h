@@ -153,10 +153,17 @@ struct alignas(64) ConcurrentQueue
 	void deinit();
 };
 
+#ifdef _WIN32
 static_assert(sizeof(mutex) == 80, "");
 static_assert(sizeof(condition_variable) == 72, "");
 static_assert(sizeof(DenseQueue) == 24, "");
 static_assert(sizeof(ConcurrentQueue) == 192, "ConcurrentQueue expected to be 192 bytes");
+#else
+static_assert(sizeof(mutex) == 40, "");
+static_assert(sizeof(condition_variable) == 48, "");
+static_assert(sizeof(DenseQueue) == 24, "");
+static_assert(sizeof(ConcurrentQueue) == 128, "ConcurrentQueue expected to be 128 bytes");
+#endif
 
 
 void* ConcurrentQueue::push(void* inData, bool zero)

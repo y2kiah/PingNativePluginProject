@@ -1,4 +1,3 @@
-#include <atomic>
 #include "platform.h"
 
 #ifdef _WIN32
@@ -19,22 +18,21 @@ void platformSleep(
 	Sleep(ms);
 }
 
+u32 platformGetPid()
+{
+	return (u32)GetCurrentProcessId();
+}
+
 
 // NOT _WIN32
 #else
 
-#include "../../vendor/SDL2/SDL_messagebox.h"
 #include <unistd.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <sys/resource.h>
-#include <sys/mman.h>
-#include <dlfcn.h>
-#include <ctime>
+
 
 void platformPause()
 {
-	pause();
+	//pause();
 }
 
 #ifdef _SC_PRIORITY_SCHEDULING
@@ -60,6 +58,12 @@ void platformSleep(
 {
 	usleep(ms * 1000);
 }
+
+u32 platformGetPid()
+{
+	return (u32)getpid();
+}
+
 
 // END NOT WIN32
 #endif
