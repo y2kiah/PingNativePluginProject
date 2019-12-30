@@ -22,3 +22,4 @@ cd ..
 
 cp -p ./build/test.out ./
 cp -p ./build/libunity-ping.so ./
+cp -p ./build/libunity-ping.so ../UnityProject/Assets/Plugins/Linux/x64/

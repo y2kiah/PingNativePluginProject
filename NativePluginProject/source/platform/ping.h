@@ -44,42 +44,42 @@ enum SequenceStatus : u32 {
 typedef h32 PingJobHnd;
 
 struct PingRequest {
-    ICMPHeader     requestHdr;
-    ICMPHeader     replyHdr;
-    i64            sendTime;
-    i64            replyTime;
-    r32            elapsedMS;
-    u8             ttl;
-    PingStatus     status;
+    ICMPHeader  requestHdr;
+    ICMPHeader  replyHdr;
+    i64         sendTime;
+    i64         replyTime;
+    r32         elapsedMS;
+    u8          ttl;
+    PingStatus  status;
     
-    u16            _pad;
+    u16         _pad;
 };
 
 struct PingStats {
-    u32            sent;
-    u32            received;
-    u32            lost;
-    r32            pctLost;
-    r32            minRoundTrip;
-    r32            maxRoundTrip;
-    r32            avgRoundTrip;
-    r32            stdDevRoundTrip;
+    u32         sent;
+    u32         received;
+    u32         lost;
+    r32         pctLost;
+    r32         minRoundTrip;
+    r32         maxRoundTrip;
+    r32         avgRoundTrip;
+    r32         stdDevRoundTrip;
 };
 
 struct PingSequence {
-    const char*    host;
-    atomic_u32     status;
-    u16            dataSize;
-    u16            numRequests;
-    u16            timeoutMS;
-    u16            intervalMS;
-    u16            seq;
-    u8             ttl;
+    char*       host;
+    atomic_u32  status;
+    u16         dataSize;
+    u16         numRequests;
+    u16         timeoutMS;
+    u16         intervalMS;
+    u16         seq;
+    u8          ttl;
     
-    u8             _pad;
+    u8          _pad;
 
-    PingRequest    requests[MaxSequenceRequests];
-    PingStats      stats;
+    PingRequest requests[MaxSequenceRequests];
+    PingStats   stats;
 };
 
 struct Ping {

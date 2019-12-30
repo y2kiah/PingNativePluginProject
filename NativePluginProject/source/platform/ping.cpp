@@ -611,7 +611,10 @@ ping(
     {
         PingSequence& sequence = pJob->sequence;
 
-        sequence.host = host;
+        size_t hostLen = strlen(host);
+        sequence.host = (char*)malloc(hostLen+1);
+        _strncpy_s(sequence.host, hostLen+1, host, hostLen);
+
         sequence.dataSize = dataSize;
         sequence.numRequests = numRequests;
         sequence.timeoutMS = timeoutMS;
@@ -641,12 +644,14 @@ pollResult(
             {
                 // job is finished, copy stats out and free the job from the map
                 memcpy(&ping.stats, &job->sequence.stats, sizeof(PingStats));
+                free(job->sequence.host);
                 jobs.erase(ping.hnd);
                 ping.hnd = null_h32;
             }
             else if (ping.status == Sequence_Error)
             {
                 // job errored, remove it and don't copy anything
+                free(job->sequence.host);
                 jobs.erase(ping.hnd);
                 ping.hnd = null_h32;
             }

@@ -16,3 +16,4 @@ popd
 
 copy .\build\test.exe .\
 copy .\build\unity-ping.dll .\
+copy .\build\unity-ping.dll ..\UnityProject\Assets\Plugins\Windows\x64\
